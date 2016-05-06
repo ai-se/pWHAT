@@ -1,4 +1,4 @@
-# trying multiobjective data
+import sys
 
 
 def WHEREDataTransformation(df):
@@ -119,6 +119,7 @@ def run_experiment_40(filename, count_member=None):
 
     independent_columns = [h for h in df.columns if '$<' not in h]
     dependent_columns = [h for h in df.columns if '$<' in h]
+    assert(len(dependent_columns) == 1), "Something is wrong"
 
     full_training_independent = training_data[independent_columns]
     full_training_dependent = training_data[dependent_columns]
@@ -142,8 +143,6 @@ def run_experiment_40(filename, count_member=None):
         key = "[" + ",".join(map(str, stdi)) + "]"
         sampled_training_data_dependent.append(data_dict[key])
 
-    mres = []
-
     from sklearn import tree
     CART = tree.DecisionTreeRegressor()
     CART = CART.fit(sampled_training_data_independent, sampled_training_data_dependent)
@@ -151,27 +150,38 @@ def run_experiment_40(filename, count_member=None):
     predictions = [float(x) for x in CART.predict(testing_independent)]
 
     mre = []
-    for i, j in zip(testing_dependent['$<AnalysisTime'].tolist(), predictions):
+    for i, j in zip(testing_dependent[dependent_columns[-1]].tolist(), predictions):
         mre.append(abs(i - j) / float(i))
 
     from numpy import mean
-    mres.append(round(mean(mre), 5)*100)
-    return mres
+    return round(mean(mre), 5), len(sampled_training_data_dependent)
 
 
-def experiment_what_so(filename):
+def experiment_what_so1(filename):
     mres = []
+    evals = []
+    print filename
     for _ in xrange(10):
-        mres.append(run_experiment_40(filename))
+        mre, eval = run_experiment_40(filename)
+        mres.append(mre)
+        evals.append(eval)
+        print filename, mre*100, eval
+        sys.stdout.flush()
 
     import pickle
-    pickle.dump( mres, open( "mres.p", "wb" ))
+    pickle.dump( mres, open( filename+"_mres.p", "wb" ))
+    pickle.dump( evals, open( filename+"_evals.p", "wb" ))
 
     from numpy import mean, std
     print mean(mres), round(std(mres))
 
 
+folder_name = "./Data/input/"
+# so_filenames = ["AJStats.csv",
+#                 "Apache.csv", "BerkeleyC.csv", "BerkeleyDB.csv", "BerkeleyDBC.csv", "BerkeleyDBJ.csv",
+#                 "clasp.csv", "Dune.csv", "Elevator.csv", "Email.csv", "EPL.csv", "Hipacc.csv", "JavaGC.csv", "LinkedList.csv",
+#                 "lrzip.csv", "PKJab.csv", "PrevaylerPP.csv", "SQLite.csv", "Wget.csv", "x264", "mo_ZipMe.csv"]
 
-filenames = ["./Data/input/AJStats.csv"]
-for filename in filenames:
-    experiment_what_so(filename)
+so_filenames = ["mo_ZipMe.csv"]
+for filename in so_filenames:
+    experiment_what_so1(folder_name + filename)

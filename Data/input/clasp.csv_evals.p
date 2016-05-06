@@ -1,0 +1,12 @@
+(lp0
+I32
+aI32
+aI32
+aI26
+aI32
+aI32
+aI24
+aI32
+aI32
+aI32
+a.

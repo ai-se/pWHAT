@@ -80,7 +80,7 @@ def comparision_n2(data):
     max_i = -1
     max_j = -1
     for i in xrange(len(data)):
-        for j in xrange(len(data)):
+        for j in xrange(i, len(data)):
             if i == j: distance_matrix[i][j] = 0
             elif distance_matrix[i][j] == -1:
                 distance_matrix[i][j] = euclidean_distance(data[i], data[j])
@@ -153,7 +153,7 @@ def add_spectral_dimensions(data):
 
     just_decisions = [d.decisions for d in data]
 
-    east, west = comparision_n2(just_decisions)
+    east, west = comparision_2n(just_decisions)
     c = euclidean_distance(east, west)
 
     for d in data:
@@ -170,10 +170,8 @@ def get_hotspot_scores(data):
     distance_matrix = [[-1 for _ in xrange(len(data))] for _ in xrange(len(data))]
     from sklearn.metrics import jaccard_similarity_score
     for i in xrange(len(data)):
-        for j in xrange(len(data)):
+        for j in xrange(i, len(data)):
             if distance_matrix[i][j] == -1 and i != j:
-                # print data[i].spectral_decisions, data[j].spectral_decisions
-                # print data[i].decisions, data[j].decisions
                 distance_matrix[i][j] = euclidean_distance(data[i].spectral_decisions, data[j].spectral_decisions)
                 distance_matrix[j][i] = distance_matrix[i][j]
             elif distance_matrix[i][j] == -1 and i == j:
@@ -224,6 +222,7 @@ def run_experiment(dataset_name):
     from random import shuffle
     indexes = range(len(raw_data))
     shuffle(indexes)
+
     # getting the reserve testing data
     training_reservior_indexes = indexes[:int(len(raw_data) * 0.4)]
     testing_reserve_indexes = indexes[int(len(raw_data) * 0.4):int(len(raw_data) * 0.4)+30]
@@ -239,23 +238,25 @@ def run_experiment(dataset_name):
     f.write(content)
     f.close()
 
+    import time
+    begin_time = time.time()
+    print "WHERE started"
     clusters = WHEREDataTransformation(temp_filename)
+    print "Time taken for WHERE: ", (time.time() - begin_time)%60
     clusters_data = {}
     for i, cluster in enumerate(clusters):
         for c in cluster:
             key = "[" + ",".join(map(str, c)) + "]"
             clusters_data[key] = i
 
-    new_clusters = []
-    for cluster in clusters:
-        new_clusters.append([str(c) for c in cluster])
-
+    begin_time = time.time()
     raw_data = read_csv(dataset_name)
     spectral_data = add_spectral_dimensions(raw_data)
     data_dict = {}
     for d in spectral_data:
         key = "[" + ",".join(map(str, d.decisions)) + "]"
         data_dict[key] = d
+    print "Time taken for SDem: ", (time.time() - begin_time)%60
 
     extracted_clusters = []
     for i, cluster in enumerate(clusters):
@@ -265,22 +266,26 @@ def run_experiment(dataset_name):
             temp.append(data_dict[str(key)])
         extracted_clusters.append(temp)
 
+    begin_time = time.time()
     hotscores_extracted_clusters = []
     for ec in extracted_clusters: hotscores_extracted_clusters.append(get_hotspot_scores(ec))
+    print "Time taken for Hotspot: ", (time.time() - begin_time) % 60
+
 
     # for cluster ranking
     sorted_extracted_clusters = sorted(hotscores_extracted_clusters, key=lambda x: sorting_function(x))
     number_of_clusters = len(sorted_extracted_clusters)
 
     fault_rate = 1
-    count = 1
+    count = 10
     training_indep = []
     training_dep = []
-    while fault_rate > 0.07:
-        training_indep = [sorted_extracted_clusters[c%number_of_clusters][int(c/number_of_clusters)].decisions for c in xrange(count)]
-        training_dep = [sorted_extracted_clusters[c%number_of_clusters][int(c/number_of_clusters)].objective for c in xrange(count)]
-        assert(len(training_indep) == count), "something is wrong"
-        assert(len(training_dep) == count), "something is wrong"
+    while fault_rate > 0.07 and count < len(training_data_reservior)-1:
+        print '#',
+        training_indep = [sorted_extracted_clusters[c%number_of_clusters][int(c/number_of_clusters)].decisions for c in xrange(count) if c/number_of_clusters < len(sorted_extracted_clusters[c%number_of_clusters])]
+        training_dep = [sorted_extracted_clusters[c%number_of_clusters][int(c/number_of_clusters)].objective for c in xrange(count) if c/number_of_clusters < len(sorted_extracted_clusters[c%number_of_clusters])]
+        # assert(len(training_indep) == count), "something is wrong"
+        # assert(len(training_dep) == count), "something is wrong"
 
         indep_testing_set = [td.decisions for td in testing_reserve]
         dep_testing_set = [td.objective for td in testing_reserve]
@@ -296,7 +301,12 @@ def run_experiment(dataset_name):
 
         from numpy import mean
         fault_rate = mean(mre)
-        count += 1
+        sys.stdout.flush()
+        if int(len(training_reservior_indexes)*0.01) != 0:
+            count += int(len(training_reservior_indexes)*0.01)
+        else:
+            count += 1
+
 
     assert(len(training_indep)==len(training_dep)), "Something is wrong"
     from sklearn import tree
@@ -390,7 +400,14 @@ if __name__ == "__main__":
     import sys
     from random import seed
     seed(10)
-    datasets = ["apache", "bj", "llvm",  "x264", "bc","sqlite",]
+    # datasets = [ "Dune.csv"]
+    #                 #  "Dune.csv", "EPL.csv", "Hipacc.csv", "JavaGC.csv", "LinkedList.csv",
+    #                 # "lrzip.csv", "PKJab.csv", "PrevaylerPP.csv", "SQLite.csv", "Wget.csv", "x264", "AJStats.csv",]
+
+    datasets = [    "Apache.csv", "BerkeleyC.csv", "BerkeleyDB.csv", "BerkeleyDBC.csv", "BerkeleyDBJ.csv",
+                    "clasp.csv", "Dune.csv", "EPL.csv", "Hipacc.csv", "JavaGC.csv", "LinkedList.csv",
+                    "lrzip.csv", "PKJab.csv", "SQLite.csv", "Wget.csv", "AJStats.csv"]
+
     for dataset in datasets:
         mean_mre = []
         mean_length = []

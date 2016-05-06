@@ -165,7 +165,7 @@ def run_experiment_40(filename, count_member=None):
 
 mres = []
 for _ in xrange(10):
-    mres.append(run_experiment_40("./Data/input/TriMesh.csv"))
+    mres.append(run_experiment_40("./Data/input/mo_TriMesh.csv"))
 
 import pickle
 pickle.dump( mres, open( "mres.p", "wb" ))

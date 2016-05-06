@@ -10,7 +10,6 @@ def where(data):
   """
   Recursive FASTMAP clustering.
   """
-  rseed(0)
   if isinstance(data, pd.core.frame.DataFrame):
     data = data.as_matrix()
   if not isinstance(data, np.ndarray):
