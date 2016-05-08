@@ -1,3 +1,205 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:0fae83e0ef650c60cde0b8d2fef854bae838b66de13a3ee40bc9084761b04a45
-size 5304
+<vm name="EPL">
+  <binaryOptions>
+    <configurationOption>
+      <name>Operations</name>
+      <outputString>Operations</outputString>
+      <prefix>
+      </prefix>
+      <postfix>
+      </postfix>
+      <parent>
+      </parent>
+      <children />
+      <impliedOptions />
+      <excludedOptions />
+      <defaultValue>Selected</defaultValue>
+      <optional>False</optional>
+    </configurationOption>
+    <configurationOption>
+      <name>Plus</name>
+      <outputString>Plus</outputString>
+      <prefix>
+      </prefix>
+      <postfix>
+      </postfix>
+      <parent>Operations</parent>
+      <children />
+      <impliedOptions />
+      <excludedOptions />
+      <defaultValue>Selected</defaultValue>
+      <optional>True</optional>
+    </configurationOption>
+    <configurationOption>
+      <name>Numbers</name>
+      <outputString>Numbers</outputString>
+      <prefix>
+      </prefix>
+      <postfix>
+      </postfix>
+      <parent>Operations</parent>
+      <children />
+      <impliedOptions />
+      <excludedOptions />
+      <defaultValue>Selected</defaultValue>
+      <optional>True</optional>
+    </configurationOption>
+    <configurationOption>
+      <name>Neg</name>
+      <outputString>Neg</outputString>
+      <prefix>
+      </prefix>
+      <postfix>
+      </postfix>
+      <parent>Operations</parent>
+      <children />
+      <impliedOptions />
+      <excludedOptions />
+      <defaultValue>Selected</defaultValue>
+      <optional>True</optional>
+    </configurationOption>
+    <configurationOption>
+      <name>Eval</name>
+      <outputString>Eval</outputString>
+      <prefix>
+      </prefix>
+      <postfix>
+      </postfix>
+      <parent>
+      </parent>
+      <children />
+      <impliedOptions>
+        <options>Plus</options>
+        <options>Numbers</options>
+        <options>Neg</options>
+      </impliedOptions>
+      <excludedOptions />
+      <defaultValue>Selected</defaultValue>
+      <optional>True</optional>
+    </configurationOption>
+    <configurationOption>
+      <name>ToString</name>
+      <outputString>ToString</outputString>
+      <prefix>
+      </prefix>
+      <postfix>
+      </postfix>
+      <parent>
+      </parent>
+      <children />
+      <impliedOptions>
+        <options>Plus</options>
+        <options>Numbers</options>
+        <options>Neg</options>
+      </impliedOptions>
+      <excludedOptions />
+      <defaultValue>Selected</defaultValue>
+      <optional>True</optional>
+    </configurationOption>
+    <configurationOption>
+      <name>ToString_Plus</name>
+      <outputString>ToString_Plus</outputString>
+      <prefix>
+      </prefix>
+      <postfix>
+      </postfix>
+      <parent>
+      </parent>
+      <children />
+      <impliedOptions />
+      <excludedOptions />
+      <defaultValue>Selected</defaultValue>
+      <optional>True</optional>
+    </configurationOption>
+    <configurationOption>
+      <name>ToString_Numbers</name>
+      <outputString>ToString_Numbers</outputString>
+      <prefix>
+      </prefix>
+      <postfix>
+      </postfix>
+      <parent>
+      </parent>
+      <children />
+      <impliedOptions />
+      <excludedOptions />
+      <defaultValue>Selected</defaultValue>
+      <optional>True</optional>
+    </configurationOption>
+    <configurationOption>
+      <name>Eval_Plus</name>
+      <outputString>Eval_Plus</outputString>
+      <prefix>
+      </prefix>
+      <postfix>
+      </postfix>
+      <parent>
+      </parent>
+      <children />
+      <impliedOptions />
+      <excludedOptions />
+      <defaultValue>Selected</defaultValue>
+      <optional>True</optional>
+    </configurationOption>
+    <configurationOption>
+      <name>Eval_Neg</name>
+      <outputString>Eval_Neg</outputString>
+      <prefix>
+      </prefix>
+      <postfix>
+      </postfix>
+      <parent>
+      </parent>
+      <children />
+      <impliedOptions />
+      <excludedOptions />
+      <defaultValue>Selected</defaultValue>
+      <optional>True</optional>
+    </configurationOption>
+    <configurationOption>
+      <name>Eval_Numbers</name>
+      <outputString>Eval_Numbers</outputString>
+      <prefix>
+      </prefix>
+      <postfix>
+      </postfix>
+      <parent>
+      </parent>
+      <children />
+      <impliedOptions />
+      <excludedOptions />
+      <defaultValue>Selected</defaultValue>
+      <optional>True</optional>
+    </configurationOption>
+    <configurationOption>
+      <name>base</name>
+      <outputString>base</outputString>
+      <prefix>
+      </prefix>
+      <postfix>
+      </postfix>
+      <parent>
+      </parent>
+      <children />
+      <impliedOptions />
+      <excludedOptions />
+      <defaultValue>Selected</defaultValue>
+      <optional>False</optional>
+    </configurationOption>
+    <configurationOption>
+      <name>ToString_Neg</name>
+      <outputString>ToString_Neg</outputString>
+      <prefix>
+      </prefix>
+      <postfix>
+      </postfix>
+      <parent>
+      </parent>
+      <children />
+      <impliedOptions />
+      <excludedOptions />
+      <defaultValue>Selected</defaultValue>
+      <optional>True</optional>
+    </configurationOption>
+  </binaryOptions>
+  <numericOptions />
+</vm>

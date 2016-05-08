@@ -30,7 +30,7 @@ class data_item():
 
 def read_csv(filename, header=False):
     def transform(filename):
-        return "../../Data/input/" + filename
+        return "./data/input/" + filename
 
     import csv
     data = []
@@ -48,8 +48,8 @@ def read_csv(filename, header=False):
 
 
 if __name__ == "__main__":
-    measurements = {'apache':54, 'bj':52, 'llvm':131, 'x264':94, 'bc':145, 'sqlite':595}
-    datasets = ['apache', 'bc', 'bj', 'llvm', 'sqlite', 'x264']
+    measurements = {"ajstats":2013, "Apache":55, "BerkeleyC":219, "BerkeleyDB":97, "BerkeleyDBC":161, "BerkeleyDBJ":57, "clasp":167, "EPL":104, "lrzip":47}
+    datasets = ["ajstats", "Apache", "BerkeleyC", "BerkeleyDB", "BerkeleyDBC", "BerkeleyDBJ", "clasp", "EPL", "lrzip"]
     repeat = 10
 
     for dataset in datasets:
@@ -73,5 +73,6 @@ if __name__ == "__main__":
             mean_list.append(get_results(training_set, testing_set))
 
         from numpy import mean, std
-        print "Dataset: ", dataset," Mean: ", round(mean(mean_list)*100, 3), " Std: ", round(std(mean_list), 3)
+        print "Dataset: ", dataset," Mean: ", round(mean(mean_list)*100, 3), " Std: ", round(std(mean_list), 3),
+        print "#Evals: ", measurements[dataset]
 

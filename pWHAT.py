@@ -130,6 +130,7 @@ def read_csv(filename, header=False):
 
     import csv
     data = []
+    print transform(filename)
     f = open(transform(filename), 'rb')
     reader = csv.reader(f)
     for i,row in enumerate(reader):

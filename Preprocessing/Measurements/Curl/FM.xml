@@ -1,3 +1,219 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:2104037d67c00ce1071404d5d3efbbeed57b8d86a1b31d5a5d2184dd0b2cac40
-size 5502
+<plm canReuseInstance="true" name="curl">
+	<element dynamic="false" id="2" name="base" optional="false" type="feature">
+		<path_absolut/>
+		<path_relativ/>
+		<constraints>
+			<constraint type="alternative"/>
+			<constraint type="commulative"/>
+			<constraint type="requires"/>
+			<constraint type="excludes"/>
+		</constraints>
+		<childElements/>
+		<order/>
+		<classes/>
+	</element>
+	<element dynamic="false" id="3" name="compressed" optional="true" type="feature">
+		<path_absolut/>
+		<path_relativ/>
+		<constraints>
+			<constraint type="alternative"/>
+			<constraint type="commulative"/>
+			<constraint type="requires"/>
+			<constraint type="excludes"/>
+		</constraints>
+		<childElements/>
+		<order/>
+		<classes/>
+	</element>
+	<element dynamic="false" id="4" name="dump_header" optional="true" type="feature">
+		<path_absolut/>
+		<path_relativ/>
+		<constraints>
+			<constraint type="alternative"/>
+			<constraint type="commulative"/>
+			<constraint type="requires"/>
+			<constraint type="excludes"/>
+		</constraints>
+		<childElements/>
+		<order/>
+		<classes/>
+	</element>
+	<element dynamic="false" id="5" name="include" optional="true" type="feature">
+		<path_absolut/>
+		<path_relativ/>
+		<constraints>
+			<constraint type="alternative"/>
+			<constraint type="commulative"/>
+			<constraint type="requires"/>
+			<constraint type="excludes"/>
+		</constraints>
+		<childElements/>
+		<order/>
+		<classes/>
+	</element>
+	<element dynamic="false" id="6" name="no_buffer" optional="true" type="feature">
+		<path_absolut/>
+		<path_relativ/>
+		<constraints>
+			<constraint type="alternative"/>
+			<constraint type="commulative"/>
+			<constraint type="requires"/>
+			<constraint type="excludes"/>
+		</constraints>
+		<childElements/>
+		<order/>
+		<classes/>
+	</element>
+	<element dynamic="false" id="7" name="no_keepalive" optional="true" type="feature">
+		<path_absolut/>
+		<path_relativ/>
+		<constraints>
+			<constraint type="alternative"/>
+			<constraint type="commulative"/>
+			<constraint type="requires"/>
+			<constraint type="excludes"/>
+		</constraints>
+		<childElements/>
+		<order/>
+		<classes/>
+	</element>
+	<element dynamic="false" id="8" name="raw" optional="true" type="feature">
+		<path_absolut/>
+		<path_relativ/>
+		<constraints>
+			<constraint type="alternative"/>
+			<constraint type="commulative"/>
+			<constraint type="requires"/>
+			<constraint type="excludes"/>
+		</constraints>
+		<childElements/>
+		<order/>
+		<classes/>
+	</element>
+	<element dynamic="false" id="9" name="http1_0" optional="true" type="feature">
+		<path_absolut/>
+		<path_relativ/>
+		<constraints>
+			<constraint type="alternative"/>
+			<constraint type="commulative"/>
+			<constraint type="requires"/>
+			<constraint type="excludes"/>
+		</constraints>
+		<childElements/>
+		<order/>
+		<classes/>
+	</element>
+	<element dynamic="false" id="10" name="progress_bar" optional="true" type="feature">
+		<path_absolut/>
+		<path_relativ/>
+		<constraints>
+			<constraint type="alternative"/>
+			<constraint type="commulative"/>
+			<constraint type="requires"/>
+			<constraint type="excludes"/>
+		</constraints>
+		<childElements/>
+		<order/>
+		<classes/>
+	</element>
+	<element dynamic="false" id="11" name="verbosity" optional="false" type="feature">
+		<path_absolut/>
+		<path_relativ/>
+		<constraints>
+			<constraint type="alternative"/>
+			<constraint type="commulative"/>
+			<constraint type="requires"/>
+			<constraint type="excludes"/>
+		</constraints>
+		<childElements>
+			<child optional="false">
+				<id>12</id>
+			</child>
+			<child optional="false">
+				<id>13</id>
+			</child>
+			<child optional="false">
+				<id>14</id>
+			</child>
+		</childElements>
+		<order/>
+		<classes/>
+	</element>
+	<element dynamic="false" id="12" name="trace" optional="false" type="feature">
+		<path_absolut/>
+		<path_relativ/>
+		<parentElement>
+			<id>11</id>
+		</parentElement>
+		<constraints>
+			<constraint type="alternative">
+				<constraint_element>
+					<id>13</id>
+					<name>verbose</name>
+				</constraint_element>
+				<constraint_element>
+					<id>14</id>
+					<name>silent</name>
+				</constraint_element>
+			</constraint>
+			<constraint type="commulative"/>
+			<constraint type="requires"/>
+			<constraint type="excludes"/>
+		</constraints>
+		<childElements/>
+		<order/>
+		<classes/>
+	</element>
+	<element dynamic="false" id="13" name="verbose" optional="false" type="feature">
+		<path_absolut/>
+		<path_relativ/>
+		<parentElement>
+			<id>11</id>
+		</parentElement>
+		<constraints>
+			<constraint type="alternative">
+				<constraint_element>
+					<id>12</id>
+					<name>trace</name>
+				</constraint_element>
+				<constraint_element>
+					<id>14</id>
+					<name>silent</name>
+				</constraint_element>
+			</constraint>
+			<constraint type="commulative"/>
+			<constraint type="requires"/>
+			<constraint type="excludes"/>
+		</constraints>
+		<childElements/>
+		<order/>
+		<classes/>
+	</element>
+	<element dynamic="false" id="14" name="silent" optional="false" type="feature">
+		<path_absolut/>
+		<path_relativ/>
+		<parentElement>
+			<id>11</id>
+		</parentElement>
+		<constraints>
+			<constraint type="alternative">
+				<constraint_element>
+					<id>12</id>
+					<name>trace</name>
+				</constraint_element>
+				<constraint_element>
+					<id>13</id>
+					<name>verbose</name>
+				</constraint_element>
+			</constraint>
+			<constraint type="commulative"/>
+			<constraint type="requires"/>
+			<constraint type="excludes"/>
+		</constraints>
+		<childElements/>
+		<order/>
+		<classes/>
+	</element>
+	<properties/>
+	<furtherConstraints/>
+</plm>

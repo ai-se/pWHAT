@@ -236,6 +236,7 @@ def run_experiment(dataset_name):
     training_data_reservior = [raw_data[i] for i in training_reservior_indexes]
     testing_data_reservior = [raw_data[i] for i in testing_indexes]
 
+    # writing the training data into a file to start WHEREing
     content = return_content(H, training_data_reservior)
     temp_filename = "./temp_where.csv"
     f = open(temp_filename, "w")
