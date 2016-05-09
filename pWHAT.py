@@ -405,10 +405,11 @@ if __name__ == "__main__":
     #                 #  "Dune.csv", "EPL.csv", "Hipacc.csv", "JavaGC.csv", "LinkedList.csv",
     #                 # "lrzip.csv", "PKJab.csv", "PrevaylerPP.csv", "SQLite.csv", "Wget.csv", "x264", "AJStats.csv",]
 
-    datasets = [    "Apache.csv", "BerkeleyC.csv", "BerkeleyDB.csv", "BerkeleyDBC.csv", "BerkeleyDBJ.csv",
-                    "clasp.csv", "Dune.csv", "EPL.csv", "Hipacc.csv", "JavaGC.csv", "LinkedList.csv",
-                    "lrzip.csv", "PKJab.csv", "SQLite.csv", "Wget.csv", "AJStats.csv"]
+    # datasets = [    "AJStats.csv", "Apache.csv", "BerkeleyC.csv", "BerkeleyDB.csv", "BerkeleyDBC.csv", "BerkeleyDBJ.csv",
+    #                 "clasp.csv", "Dune.csv", "EPL.csv", "Hipacc.csv", "JavaGC.csv", "LinkedList.csv",
+    #                 "lrzip.csv", "PKJab.csv", "SQLite.csv", "Wget.csv", "x264.csv", "ZipMe.csv"]
 
+    datasets = ["x264.csv", "ZipMe.csv"]
     for dataset in datasets:
         mean_mre = []
         mean_length = []
@@ -420,7 +421,7 @@ if __name__ == "__main__":
             mean_length.append(datalength)
         from numpy import mean, std
         print
-        print dataset, round(mean(mean_mre)*100, 3), mean(mean_length), round(std(mean_mre)*100, 3), std(mean_length)
+        print dataset, round(mean(mean_mre)*100, 3), round(std(mean_mre)*100, 3), mean(mean_length), std(mean_length)
         print [round(r * 100, 3) for r in mean_mre]
         print [round(r, 3) for r in mean_length]
         print

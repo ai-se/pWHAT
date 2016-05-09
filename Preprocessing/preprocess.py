@@ -1145,7 +1145,8 @@ def preprocessing_x264(fname):
 
     configuraiton_dict = {mix[x]:x for x in xrange(len(mix))}
     configuration_names = ["$"+s for s in set(all_configuratio_names)]
-    performance_name = "$<MainMemory, $<Performance"
+    # performance_name = "$<MainMemory, $<Performance"
+    performance_name = "$<Performance"
     header = ",".join(configuration_names) + "," + performance_name
     lines = []
 
@@ -1155,13 +1156,14 @@ def preprocessing_x264(fname):
         active_indexes = [configuraiton_dict[ac] for ac in active_configurations]
         decisions = [0 for _ in xrange(len(mix))]
         for ai in active_indexes: decisions[ai] = 1
-        try: objective1 = str(c["MainMemory"])
-        except: objective1 = "-1"
-        try:
-            objective2 = str(c["Performance"])
-        except:objective2 = "-1"
+        # try: objective1 = str(c["MainMemory"])
+        # except: objective1 = "-1"
+        try:objective2 = str(c["Performance"])
+        except:
+            continue
+            # objective2 = "-1" # avoid the values that has -1
 
-        lines.append(",".join([str(decision) for decision in decisions]) + "," + objective1+ "," + objective2)
+        lines.append(",".join([str(decision) for decision in decisions]) + "," + objective2)
 
     f = open("./CSV/" + fname + ".csv", "w")
     f.write(header + "\n")
@@ -1192,31 +1194,71 @@ def preprocessing_x264_DB(fname):
                     temp_dict[key] = int(value)
                 d[data.attrib["columname"]] = temp_dict
             else:
-                d[data.attrib["columname"]] = [dd for dd in data.text.strip().split(",") if len(dd)!=0]
+                text = data.text.strip()
+                temp_vars = text.split(",")
+
+                configs = []
+                variable_features = []
+
+                for temp_var in temp_vars:
+                    temp_var = temp_var.strip()
+                    comps = temp_var.split(" ")
+                    if len(comps) == 1: configs.append(comps[-1])
+                    elif len(comps) == 2: variable_features.append(comps)
+                    else:
+                        print "Somethign is wrong"
+                        import pdb
+                        pdb.set_trace()
+                temp_dict = {}
+                for variable_feature in variable_features:
+                    key, value = variable_feature[0], variable_feature[1]
+                    value = value.replace("_", "-")
+                    temp_dict[key] = float(value)
+
+                d["Variable Features"] = temp_dict
+                d[data.attrib["columname"]] = configs
         Content.append(d)
 
     assert(len(rows) == len(Content)), "Something is wrong"
 
+    assert (len(rows) == len(Content)), "Something is wrong"
+
     all_configuratio_names = []
+    all_variable_features = []
     for C in Content:
         all_configuratio_names.extend(C['Configuration'])
+        all_variable_features.extend(C["Variable Features"].keys())
 
     b_configuration_names = list(set(all_configuratio_names))
+    variable_feature_names = list(set(all_variable_features))
 
-    mix = b_configuration_names
 
-    configuraiton_dict = {mix[x]:x for x in xrange(len(mix))}
-    configuration_names = ["$"+s for s in set(all_configuratio_names)]
-    performance_name = "$<PSNR, $<Energy, $<SSIM, $<Time, $<Watt, $<Speed, $<Size"
+    mix = b_configuration_names + variable_feature_names
+
+    configuraiton_dict = {mix[x]: x for x in xrange(len(mix))}
+    configuration_names = ["$" + s for s in set(all_configuratio_names)]
+    configuration_names += ["$" + s for s in variable_feature_names]
+    performance_name = "$<PSNR, $<Energy, $<SSIM, $<Time, $<Watt, $<Speed"
     header = ",".join(configuration_names) + "," + performance_name
     lines = []
+    #
 
 
-    for cc, c in enumerate(Content):
+    for content_i, c in enumerate(Content):
+        print content_i, str(c["PSNR"]), str(c["SSIM"])
         active_configurations = c["Configuration"]
         active_indexes = [configuraiton_dict[ac] for ac in active_configurations]
         decisions = [0 for _ in xrange(len(mix))]
         for ai in active_indexes: decisions[ai] = 1
+        for i in xrange(len(variable_feature_names)):
+            # print i, len(decisions), len(configuration_names)
+            try:
+                decisions[len(b_configuration_names) + i] = c["Variable Features"][variable_feature_names[i]]
+            except:
+                if variable_feature_names[i] == "seek": decisions[len(b_configuration_names) + i] = 0  # 0 -> not set
+                else:
+                    decisions[len(b_configuration_names) + i] = c["Variable Features"][variable_feature_names[i]]
+
 
         try: objective1 = str(c["PSNR"])
         except: objective1 = "-1"
@@ -1239,18 +1281,19 @@ def preprocessing_x264_DB(fname):
             objective6 = str(c["Speed"])
         except:objective6 = "-1"
 
-        try: objective7 = str(c["Size"])
-        except: objective7 = "-1"
 
 
         lines.append(",".join([str(decision) for decision in decisions]) + "," + objective1+ "," + objective2 +
-                     "," + objective3+ "," + objective4+ "," + objective5+ "," + objective6+ "," + objective7)
+                     "," + objective3+ "," + objective4+ "," + objective5+ "," + objective6)
+
 
     f = open("./CSV/" + fname + ".csv", "w")
     f.write(header + "\n")
     for line in lines:
         f.write(line + "\n")
     f.close()
+
+
 
 
 def preprocessing_ZipMe(fname):
@@ -1290,7 +1333,8 @@ def preprocessing_ZipMe(fname):
 
     configuraiton_dict = {mix[x]:x for x in xrange(len(mix))}
     configuration_names = ["$"+s for s in set(all_configuratio_names)]
-    performance_name = "$<Performance, $<BinarySearch"
+    # performance_name = "$<Performance, $<BinarySearch"
+    performance_name = "$<BinarySearch"
     header = ",".join(configuration_names) + "," + performance_name
     lines = []
 
@@ -1300,13 +1344,16 @@ def preprocessing_ZipMe(fname):
         active_indexes = [configuraiton_dict[ac] for ac in active_configurations]
         decisions = [0 for _ in xrange(len(mix))]
         for ai in active_indexes: decisions[ai] = 1
-        try: objective1 = str(c["Performance"])
-        except: objective1 = "-1"
+        # try: objective1 = str(c["Performance"])
+        # except:
+        #     objective1 = "-1"
         try:
             objective2 = str(c["BinarySearch"])
-        except:objective2 = "-1"
+        except:
+            continue
+            # objective2 = "-1"
 
-        lines.append(",".join([str(decision) for decision in decisions]) + "," + objective1+ "," + objective2)
+        lines.append(",".join([str(decision) for decision in decisions]) + "," + objective2)
 
     f = open("./CSV/" + fname + ".csv", "w")
     f.write(header + "\n")
@@ -1316,22 +1363,23 @@ def preprocessing_ZipMe(fname):
 
 
 
-# preprocessing_AJStats("AJStats")
-# preprocessing_Apache("Apache")
-# preprocessing_BerkeleyC("BerkeleyC")
-# preprocessing_BerkeleyDB("BerkeleyDB")
-# preprocessing_BerkeleyDBC("BerkeleyDBC")
-# preprocessing_BerkeleyDBJ("BerkeleyDBJ")
-# preprocessing_clasp("clasp")
-# preprocessing_Dune("Dune")
-# preprocessing_Email("Email")
-# preprocessing_EPL("EPL")
-# preprocessing_Hipacc("Hipacc")
-# preprocessing_HSMGP_num("HSMGP_num")
-# preprocessing_lrzip("lrzip")
-# preprocessing_PKJab("PKJab")
-# preprocessing_SQLite("SQLite")
-# preprocessing_TriMesh("TriMesh")
-# preprocessing_WGet("WGet")
-# preprocessing_x264_DB("x264-DB")
+preprocessing_AJStats("AJStats")
+preprocessing_Apache("Apache")
+preprocessing_BerkeleyC("BerkeleyC")
+preprocessing_BerkeleyDB("BerkeleyDB")
+preprocessing_BerkeleyDBC("BerkeleyDBC")
+preprocessing_BerkeleyDBJ("BerkeleyDBJ")
+preprocessing_clasp("clasp")
+preprocessing_Dune("Dune")
+preprocessing_Email("Email")
+preprocessing_EPL("EPL")
+preprocessing_Hipacc("Hipacc")
+preprocessing_HSMGP_num("HSMGP_num")
+preprocessing_lrzip("lrzip")
+preprocessing_PKJab("PKJab")
+preprocessing_SQLite("SQLite")
+preprocessing_TriMesh("TriMesh")
+preprocessing_WGet("WGet")
+preprocessing_x264("x264")
+preprocessing_x264_DB("x264-DB")
 preprocessing_ZipMe("ZipMe")
