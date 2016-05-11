@@ -1,0 +1,181 @@
+AJStats.csv------------------------------
+AJStats.csv 20 2.699 0.687
+AJStats.csv 40 2.323 0.232
+AJStats.csv 60 2.337 0.209
+AJStats.csv 80 2.273 0.092
+AJStats.csv 100 2.256 0.287
+AJStats.csv 120 2.187 0.154
+AJStats.csv 140 2.156 0.123
+AJStats.csv 160 2.228 0.145
+AJStats.csv 180 2.225 0.163
+AJStats.csv 190.0 2.206 0.125
+Apache.csv------------------------------
+Apache.csv 10 25.896 15.072
+Apache.csv 20 10.766 2.032
+Apache.csv 30 8.58 1.038
+Apache.csv 40 9.982 3.158
+Apache.csv 45.0 7.575 1.097
+BerkeleyC.csv------------------------------
+BerkeleyC.csv 9 6.645 1.575
+BerkeleyC.csv 18 4.631 0.879
+BerkeleyC.csv 27 4.225 0.938
+BerkeleyC.csv 36.0 3.203 0.754
+BerkeleyDB.csv------------------------------
+BerkeleyDB.csv 19 2.235 0.277
+BerkeleyDB.csv 38 1.653 0.19
+BerkeleyDB.csv 57 1.455 0.213
+BerkeleyDB.csv 76 1.313 0.119
+BerkeleyDB.csv 95 1.153 0.162
+BerkeleyDB.csv 114 1.097 0.086
+BerkeleyDB.csv 133 0.925 0.098
+BerkeleyDB.csv 152 0.853 0.041
+BerkeleyDB.csv 171.0 0.848 0.093
+BerkeleyDBC.csv------------------------------
+BerkeleyDBC.csv 19 190.778 167.517
+BerkeleyDBC.csv 38 26.139 28.773
+BerkeleyDBC.csv 57 8.929 4.645
+BerkeleyDBC.csv 76 5.818 4.03
+BerkeleyDBC.csv 95 2.766 2.032
+BerkeleyDBC.csv 114 4.653 2.807
+BerkeleyDBC.csv 133 1.337 0.83
+BerkeleyDBC.csv 152 1.464 0.829
+BerkeleyDBC.csv 171.0 1.121 0.448
+BerkeleyDBJ.csv------------------------------
+BerkeleyDBJ.csv 27 2.763 0.398
+BerkeleyDBJ.csv 54 2.059 0.237
+BerkeleyDBJ.csv 81 1.86 0.219
+BerkeleyDBJ.csv 108 2.051 0.322
+BerkeleyDBJ.csv 135 1.975 0.333
+clasp.csv------------------------------
+clasp.csv 20 14.333 8.29
+clasp.csv 40 6.588 2.606
+clasp.csv 60 3.012 0.663
+clasp.csv 80 3.266 1.25
+clasp.csv 100 1.656 0.768
+clasp.csv 120 1.547 0.612
+clasp.csv 140 1.465 0.538
+clasp.csv 160 1.241 0.546
+clasp.csv 180 1.129 0.427
+clasp.csv 190.0 0.953 0.263
+Dune.csv------------------------------
+Dune.csv 12 23.784 10.834
+Dune.csv 24 16.023 3.503
+Dune.csv 36 19.073 8.409
+Dune.csv 48 15.017 2.933
+Dune.csv 60 13.032 1.289
+Dune.csv 66.0 14.89 3.63
+EPL.csv------------------------------
+EPL.csv 14 5.957 2.479
+EPL.csv 28 4.556 1.464
+EPL.csv 42 3.959 1.868
+EPL.csv 56 3.882 1.726
+EPL.csv 70 2.156 1.229
+EPL.csv 84 1.632 0.801
+EPL.csv 91.0 1.561 0.92
+Hipacc.csv------------------------------
+Hipacc.csv 34 22.056 4.286
+Hipacc.csv 68 19.597 2.454
+Hipacc.csv 102 17.485 1.777
+Hipacc.csv 136 16.485 2.092
+Hipacc.csv 170 14.159 0.906
+Hipacc.csv 204 12.9 1.472
+Hipacc.csv 238 12.677 0.958
+Hipacc.csv 272 12.543 1.205
+Hipacc.csv 306 11.284 0.535
+Hipacc.csv 340 11.725 1.216
+Hipacc.csv 374 10.737 0.991
+Hipacc.csv 408 9.81 0.793
+Hipacc.csv 442 9.239 0.754
+Hipacc.csv 476 9.44 0.906
+Hipacc.csv 510 9.045 0.835
+Hipacc.csv 544 8.291 1.001
+Hipacc.csv 561.0 8.15 0.602
+HSMGP_num.csv------------------------------
+HSMGP_num.csv 15 37.97 3.943
+HSMGP_num.csv 30 28.335 5.184
+HSMGP_num.csv 45 25.216 1.935
+HSMGP_num.csv 60 24.162 2.215
+HSMGP_num.csv 75 20.543 2.215
+HSMGP_num.csv 90 19.889 2.411
+HSMGP_num.csv 105.0 17.904 1.135
+JavaGC.csv------------------------------
+JavaGC.csv 36 101.385 129.191
+JavaGC.csv 72 53.453 29.434
+JavaGC.csv 108 53.107 18.285
+JavaGC.csv 144 49.833 13.512
+JavaGC.csv 180 35.227 10.628
+JavaGC.csv 216 38.14 20.181
+JavaGC.csv 252 38.969 14.543
+JavaGC.csv 288 36.442 8.725
+JavaGC.csv 324 24.846 10.58
+JavaGC.csv 360 32.949 16.772
+JavaGC.csv 396 24.774 4.775
+JavaGC.csv 432 27.599 11.328
+JavaGC.csv 468 24.624 11.832
+JavaGC.csv 504 21.868 6.847
+JavaGC.csv 540 19.916 5.143
+JavaGC.csv 576 19.432 5.649
+JavaGC.csv 612 26.076 8.658
+JavaGC.csv 630.0 19.632 5.316
+LinkedList.csv------------------------------
+LinkedList.csv 19 5.466 7.93
+LinkedList.csv 38 1.89 0.449
+LinkedList.csv 57 1.284 0.23
+LinkedList.csv 76 1.053 0.292
+LinkedList.csv 95 0.716 0.125
+LinkedList.csv 114 0.477 0.117
+LinkedList.csv 133 0.486 0.272
+LinkedList.csv 152 0.221 0.059
+LinkedList.csv 171.0 0.198 0.218
+lrzip.csv------------------------------
+lrzip.csv 20 111.885 151.779
+lrzip.csv 40 28.176 8.424
+lrzip.csv 60 16.643 3.7
+lrzip.csv 80 15.348 8.264
+lrzip.csv 100 9.281 4.214
+lrzip.csv 120 8.545 3.256
+lrzip.csv 140 4.321 2.029
+lrzip.csv 160 3.041 0.84
+lrzip.csv 180 2.234 0.292
+lrzip.csv 190.0 3.231 1.074
+PKJab.csv------------------------------
+PKJab.csv 12 1.302 0.584
+PKJab.csv 24 0.523 0.081
+PKJab.csv 36 0.384 0.077
+PKJab.csv 48 0.332 0.074
+PKJab.csv 60 0.199 0.1
+PKJab.csv 66.0 0.116 0.068
+SQLite.csv------------------------------
+SQLite.csv 40 2.999 2.368
+SQLite.csv 80 0.859 0.264
+SQLite.csv 120 0.667 0.179
+SQLite.csv 160 0.653 0.215
+SQLite.csv 200 0.467 0.236
+SQLite.csv 240 0.524 0.262
+SQLite.csv 280 0.493 0.309
+SQLite.csv 320 0.384 0.119
+SQLite.csv 360 0.474 0.156
+WGet.csv------------------------------
+WGet.csv 17 23.316 14.73
+WGet.csv 34 7.486 5.587
+WGet.csv 51 6.12 3.119
+WGet.csv 68 5.266 1.988
+WGet.csv 85 5.543 2.727
+WGet.csv 102 5.731 2.862
+WGet.csv 119 5.154 3.265
+WGet.csv 136.0 4.563 2.599
+x264.csv------------------------------
+x264.csv 17 9.837 4.237
+x264.csv 34 6.734 1.39
+x264.csv 51 4.279 0.947
+x264.csv 68 2.896 0.79
+x264.csv 85 1.941 0.843
+x264.csv 102 1.433 0.383
+x264.csv 119 1.032 0.315
+x264.csv 136.0 0.886 0.232
+ZipMe.csv------------------------------
+ZipMe.csv 17 1.548 0.587
+ZipMe.csv 34 0.775 0.266
+ZipMe.csv 51 0.43 0.192
+ZipMe.csv 68 0.171 0.077
+ZipMe.csv 85 0.153 0.027

@@ -165,23 +165,22 @@ def experiment_what_so1(filename):
         mre, eval = run_experiment_40(filename)
         mres.append(mre)
         evals.append(eval)
-        print filename, mre*100, eval
         sys.stdout.flush()
 
-    import pickle
-    pickle.dump( mres, open( filename+"_mres.p", "wb" ))
-    pickle.dump( evals, open( filename+"_evals.p", "wb" ))
+    # import pickle
+    # pickle.dump( mres, open( filename+"_mres.p", "wb" ))
+    # pickle.dump( evals, open( filename+"_evals.p", "wb" ))
 
     from numpy import mean, std
-    print mean(mres), round(std(mres))
+    print mean(mres)*100, round(std(mres), 5)*100, mean(evals), round(std(evals), 5)
 
 
-folder_name = "./Data/input/"
-# so_filenames = ["AJStats.csv",
-#                 "Apache.csv", "BerkeleyC.csv", "BerkeleyDB.csv", "BerkeleyDBC.csv", "BerkeleyDBJ.csv",
-#                 "clasp.csv", "Dune.csv", "Elevator.csv", "Email.csv", "EPL.csv", "Hipacc.csv", "JavaGC.csv", "LinkedList.csv",
-#                 "lrzip.csv", "PKJab.csv", "PrevaylerPP.csv", "SQLite.csv", "Wget.csv", "x264", "mo_ZipMe.csv"]
+folder_name = "./Data/normalized_input/normalized_"
+so_filenames = ["AJStats.csv",
+                "Apache.csv", "BerkeleyC.csv", "BerkeleyDB.csv", "BerkeleyDBC.csv", "BerkeleyDBJ.csv",
+                "clasp.csv", "Dune.csv", "EPL.csv", "Hipacc.csv", "JavaGC.csv", "LinkedList.csv",
+                "lrzip.csv", "PKJab.csv", "PrevaylerPP.csv", "SQLite.csv", "Wget.csv", "x264.csv", "ZipMe.csv"]
 
-so_filenames = ["mo_ZipMe.csv"]
+# so_filenames = ["x264.csv", "ZipMe.csv"]
 for filename in so_filenames:
     experiment_what_so1(folder_name + filename)

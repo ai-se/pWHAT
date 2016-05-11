@@ -80,7 +80,7 @@ def comparision_n2(data):
     max_i = -1
     max_j = -1
     for i in xrange(len(data)):
-        for j in xrange(1, len(data)):
+        for j in xrange(i, len(data)):
             if i == j: distance_matrix[i][j] = 0
             elif distance_matrix[i][j] == -1:
                 distance_matrix[i][j] = euclidean_distance(data[i], data[j])
@@ -130,6 +130,7 @@ def read_csv(filename, header=False):
 
     import csv
     data = []
+    print transform(filename)
     f = open(transform(filename), 'rb')
     reader = csv.reader(f)
     for i,row in enumerate(reader):
@@ -137,7 +138,7 @@ def read_csv(filename, header=False):
         elif i ==0 and header is True:
             H = row
             continue
-        data.append(data_item(i, [1 if x == "1" else 0 for x in row[:-1]], float(row[-1]) * (10**4))) # TODO: DecisionTree regressor returns int values. As a work around I multiply all the class values by 10**4
+        data.append(data_item(i, [float(x) for x in row[:-1]], float(row[-1]) * (10**4))) # TODO: DecisionTree regressor returns int values. As a work around I multiply all the class values by 10**4
     f.close()
     if header is True: return H, data
     return data
@@ -244,6 +245,8 @@ def run_experiment(dataset_name):
     f.close()
     from os import system
 
+    print "Training WHERE started"
+    sys.stdout.flush()
     clusters = WHEREDataTransformation(temp_filename)
     clusters_data = {}
     for i, cluster in enumerate(clusters):
@@ -266,7 +269,7 @@ def run_experiment(dataset_name):
     for i, cluster in enumerate(clusters):
         temp = []
         for element in cluster:
-            key = "[" + ",".join(str(element)[1:-1].split()) + "]"
+            key = "[" + ",".join([str(ee) for ee in element.tolist()]) + "]"
             temp.append(data_dict[str(key)])
         extracted_clusters.append(temp)
 
@@ -287,6 +290,8 @@ def run_experiment(dataset_name):
     f.write(testing_content)
     f.close()
 
+    print "Testing WHERE started"
+    sys.stdout.flush()
     testing_clusters =  WHEREDataTransformation(testing_temp_filename)
     testing_reserve = []
     for test_c in testing_clusters:
@@ -304,7 +309,11 @@ def run_experiment(dataset_name):
     count = 10
     training_indep = []
     training_dep = []
+    print "Progressive Sampling Started"
+    sys.stdout.flush()
     while fault_rate > 0.07 and count < len(training_data_reservior)-1:
+        # print "# "
+        sys.stdout.flush()
         training_indep = [sorted_extracted_clusters[c%number_of_clusters][int(c/number_of_clusters)].decisions for c in xrange(count) if c/number_of_clusters < len(sorted_extracted_clusters[c%number_of_clusters])]
         training_dep = [sorted_extracted_clusters[c%number_of_clusters][int(c/number_of_clusters)].objective for c in xrange(count) if c/number_of_clusters < len(sorted_extracted_clusters[c%number_of_clusters])]
 
@@ -321,10 +330,12 @@ def run_experiment(dataset_name):
         predictions = [float(x) for x in CART.predict(indep_testing_set)]
         mre = []
         for i, j in zip(dep_testing_set, predictions):
-            mre.append(abs(i - j) / float(i))
+            if i!= 0:
+                mre.append(abs(i - j) / float(i))
 
         from numpy import mean
         fault_rate = mean(mre)
+        sys.stdout.flush()
         if int(len(training_reservior_indexes)*0.01) != 0:
             count += int(len(training_reservior_indexes)*0.01)
         else:
@@ -351,9 +362,10 @@ if __name__ == "__main__":
     import sys
     from random import seed
     seed(10)
-    datasets = [    "AJStats.csv", "Apache.csv", "BerkeleyC.csv", "BerkeleyDB.csv", "BerkeleyDBC.csv", "BerkeleyDBJ.csv",
-                    "clasp.csv", "Dune.csv", "EPL.csv", "Hipacc.csv", "JavaGC.csv", "LinkedList.csv",
-                    "lrzip.csv", "PKJab.csv", "SQLite.csv", "Wget.csv", "x264.csv", "ZipMe.csv"]
+    datasets = [     "Apache.csv", "BerkeleyC.csv", "BerkeleyDB.csv", "BerkeleyDBC.csv", "BerkeleyDBJ.csv",]
+                    # "clasp.csv", "Dune.csv", "EPL.csv", "Hipacc.csv", "JavaGC.csv", "LinkedList.csv",
+                    # "lrzip.csv", "PKJab.csv", "SQLite.csv", "Wget.csv", "x264.csv", "ZipMe.csv""AJStats.csv",]
+    # datasets = ["JavaGC.csv"]
 
 
 
@@ -366,9 +378,10 @@ if __name__ == "__main__":
             mre, datalength = run_experiment(dataset)
             mean_mre.append(mre)
             mean_length.append(datalength)
+            sys.stdout.flush()
         from numpy import mean, std
         print
-        print dataset, round(mean(mean_mre)*100, 3), round(std(mean_mre)*100, 3), round(mean(mean_length), 3), round(std(mean_length), 3)
+        print dataset, round(mean(mean_mre)*100, 3), round(std(mean_mre)*100, 3), mean(mean_length), std(mean_length)
         print [round(r * 100, 3) for r in mean_mre]
         print [round(r, 3) for r in mean_length]
         print
