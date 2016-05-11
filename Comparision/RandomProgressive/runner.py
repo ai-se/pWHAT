@@ -75,7 +75,7 @@ def random_progressive_sampling(dataset_file):
                 mre.append(abs(float(i) - j) / float(i))
 
         mres.append(np.mean(mre)*100)
-    print dataset_file, np.mean(mres), np.std(mres), np.mean(evals), np.std(evals)
+    print dataset_file, round(np.mean(mres), 3), round(np.std(mres), 3), round(np.mean(evals), 3), round(np.std(evals), 3)
 
 
 
