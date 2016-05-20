@@ -215,6 +215,21 @@ def return_content(header, content):
     return return_c
 
 
+def east_west(just_decisions):
+
+    def x_form(a,b,c): return (a**2 + c**2 - b**2)/(2*c)
+
+    def y_form(a, xx):
+        if a - xx < 1e-6: return 0
+        return (a**2 - xx**2)**0.5
+
+
+
+    east, west = comparision_n2(just_decisions)
+    c = euclidean_distance(east, west)
+    return c
+
+
 def run_experiment(dataset_name):
     def transform(filename):
         return "./Data/input/" + filename
@@ -239,47 +254,40 @@ def run_experiment(dataset_name):
     f.write(content)
     f.close()
 
-    import time
-    begin_time = time.time()
-    print "WHERE started"
-    clusters = WHEREDataTransformation(temp_filename)
-    print "Time taken for WHERE: ", (time.time() - begin_time)%60
 
-    begin_time = time.time()
     raw_data = read_csv(dataset_name)
     spectral_data = add_spectral_dimensions(raw_data)
     data_dict = {}
     for d in spectral_data:
         key = "[" + ",".join(map(str, d.decisions)) + "]"
         data_dict[key] = d
-    print "Time taken for SDem: ", (time.time() - begin_time)%60
 
-    extracted_clusters = []
-    for i, cluster in enumerate(clusters):
-        temp = []
-        for element in cluster:
-            key = "[" + ",".join(str(element)[1:-1].split()) + "]"
-            temp.append(data_dict[str(key)])
-        extracted_clusters.append(temp)
-
+    import time
     begin_time = time.time()
-    hotscores_extracted_clusters = []
-    for ec in extracted_clusters: hotscores_extracted_clusters.append(get_hotspot_scores(ec))
-    print "Time taken for Hotspot: ", (time.time() - begin_time) % 60
+    print "WHERE started"
+    clusters = WHEREDataTransformation(temp_filename)
+    print "Time taken for WHERE: ", (time.time() - begin_time)%60
 
+    variances = [[i,east_west(cluster)] for i, cluster in enumerate(clusters)]
+    sorted_clusters = []
+    for s in sorted(variances, key=lambda x:x[-1], reverse=True):
+        cluster_no = s[0]
+        clusters_temp = []
+        for ss in clusters[cluster_no]:
+            key = "[" + ",".join(str(ss)[1:-1].split()) + "]"
+            clusters_temp.append(data_dict[key])
+        sorted_clusters.append(clusters_temp)
 
-    # for cluster ranking
-    sorted_extracted_clusters = sorted(hotscores_extracted_clusters, key=lambda x: sorting_function(x))
-    number_of_clusters = len(sorted_extracted_clusters)
-
+    number_of_clusters = len(sorted_clusters)
     fault_rate = 1
     count = 10
     training_indep = []
     training_dep = []
     while fault_rate > 0.07 and count < len(training_data_reservior)-1:
         print '#',
-        training_indep = [sorted_extracted_clusters[c%number_of_clusters][int(c/number_of_clusters)].decisions for c in xrange(count) if c/number_of_clusters < len(sorted_extracted_clusters[c%number_of_clusters])]
-        training_dep = [sorted_extracted_clusters[c%number_of_clusters][int(c/number_of_clusters)].objective for c in xrange(count) if c/number_of_clusters < len(sorted_extracted_clusters[c%number_of_clusters])]
+
+        training_indep = [sorted_clusters[c%number_of_clusters][int(c/number_of_clusters)].decisions for c in xrange(count) if c/number_of_clusters < len(sorted_clusters[c%number_of_clusters])]
+        training_dep = [sorted_clusters[c%number_of_clusters][int(c/number_of_clusters)].objective for c in xrange(count) if c/number_of_clusters < len(sorted_clusters[c%number_of_clusters])]
         # assert(len(training_indep) == count), "something is wrong"
         # assert(len(training_dep) == count), "something is wrong"
 
@@ -319,13 +327,6 @@ def run_experiment(dataset_name):
 
     from numpy import mean
     return mean(mre), len(training_dep)
-    #
-    # temp_list = []
-    # for ec in extracted_clusters:
-    #     temp_list.extend(sorted(ec, key=lambda x: x.hotspot_scores, reverse=True)[:count_member])
-    #
-    # assert(len(temp_list)%count_member == 0), "somethign is wrong"
-    # return spectral_data, temp_list
 
 
 def experiment_hotspot_spectral():
@@ -400,11 +401,11 @@ if __name__ == "__main__":
     #                 #  "Dune.csv", "EPL.csv", "Hipacc.csv", "JavaGC.csv", "LinkedList.csv",
     #                 # "lrzip.csv", "PKJab.csv", "PrevaylerPP.csv", "SQLite.csv", "Wget.csv", "x264", "AJStats.csv",]
 
-    # datasets = [    "AJStats.csv", "Apache.csv", "BerkeleyC.csv", "BerkeleyDB.csv", "BerkeleyDBC.csv", "BerkeleyDBJ.csv",
-    #                 "clasp.csv", "Dune.csv", "EPL.csv", "Hipacc.csv", "JavaGC.csv", "LinkedList.csv",
-    #                 "lrzip.csv", "PKJab.csv", "SQLite.csv", "Wget.csv", "x264.csv", "ZipMe.csv"]
+    datasets = [    "AJStats.csv", "Apache.csv", "BerkeleyC.csv", "BerkeleyDB.csv", "BerkeleyDBC.csv", "BerkeleyDBJ.csv",
+                    "clasp.csv", "Dune.csv", "EPL.csv", "Hipacc.csv", "LinkedList.csv",
+                    "lrzip.csv", "PKJab.csv", "SQLite.csv", "Wget.csv", "x264.csv", "ZipMe.csv"]
 
-    datasets = ["x264.csv", "ZipMe.csv"]
+    # datasets = ["x264.csv", "ZipMe.csv"]
     for dataset in datasets:
         mean_mre = []
         mean_length = []
