@@ -154,7 +154,7 @@ def add_spectral_dimensions(data):
 
     just_decisions = [d.decisions for d in data]
 
-    east, west = comparision_2n(just_decisions)
+    east, west = comparision_n2(just_decisions)
     c = euclidean_distance(east, west)
 
     for d in data:
@@ -398,10 +398,10 @@ if __name__ == "__main__":
     seed(10)
 
 
-    # datasets = [    "AJStats.csv", "Apache.csv", "BerkeleyC.csv", "BerkeleyDB.csv", "BerkeleyDBC.csv", "BerkeleyDBJ.csv",
+    datasets = [    "AJStats.csv", "Apache.csv", "BerkeleyC.csv", "BerkeleyDB.csv", "BerkeleyDBC.csv", "BerkeleyDBJ.csv",]
     #                 "clasp.csv", "Dune.csv", "EPL.csv", "Hipacc.csv", "JavaGC.csv", "LinkedList.csv",
     #                 "lrzip.csv", "PKJab.csv", "SQLite.csv", "Wget.csv", "x264.csv", "ZipMe.csv"]
-    datasets = ["Dune.csv", "Hipacc.csv", "JavaGC.csv"]
+    # datasets = ["Dune.csv", "Hipacc.csv", "JavaGC.csv"]
 
     # datasets = ["AJStats.csv"]
     for dataset in datasets:
