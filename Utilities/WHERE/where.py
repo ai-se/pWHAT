@@ -36,9 +36,9 @@ def where(data, scores):
     def recurse(dataset, step=0):
         R, C = np.shape(dataset) # No. of Rows and Col
         # Find the two most distance points.
-        one=dataset[randi(0,R-1)]
-        mid=farthest(one, dataset)
-        two=farthest(mid, dataset)
+        random_point = dataset[randi(0,R-1)]
+        one = farthest(random_point, dataset)
+        two = farthest(one, dataset)
 
         mkey = ",".join(map(str, one.tolist()))
         tkey = ",".join(map(str, two.tolist()))
@@ -46,16 +46,17 @@ def where(data, scores):
         mscore = scores[mkey]
         tscore = scores[tkey]
 
-        if step >=2:
-            heuristic = (abs(mscore-tscore)/min(mscore, tscore)) * 100
-        else:
-            heuristic = 100
+
+        heuristic = (abs(mscore-tscore)/min(mscore, tscore)) * 100
+        # print heuristic
+
+
 
         # Project each case on
         def proj(test):
-            a = aDist(mid, test)
+            a = aDist(one, test)
             b = aDist(two, test)
-            c = aDist(mid, two)
+            c = aDist(one, two)
             return (a**2-b**2+c**2)/(2*c)
 
         if R < np.sqrt(N) or heuristic <= 0.5: # since we need 64 cells
@@ -70,7 +71,7 @@ def where(data, scores):
 
 
 
-def where_org(data):
+def where_orginal(data):
     """
     Recursive FASTMAP clustering.
     """
@@ -92,15 +93,15 @@ def where_org(data):
     def recurse(dataset, step=0):
         R, C = np.shape(dataset) # No. of Rows and Col
         # Find the two most distance points.
-        one=dataset[randi(0,R-1)]
-        mid=farthest(one, dataset)
-        two=farthest(mid, dataset)
+        random_point = dataset[randi(0, R - 1)]
+        one = farthest(random_point, dataset)
+        two = farthest(one, dataset)
 
         # Project each case on
         def proj(test):
-            a = aDist(mid, test)
+            a = aDist(one, test)
             b = aDist(two, test)
-            c = aDist(mid, two)
+            c = aDist(one, two)
             return (a**2-b**2+c**2)/(2*c)
 
         if R < np.sqrt(N): # since we need 64 cells
