@@ -46,8 +46,11 @@ def where(data, scores):
         mscore = scores[mkey]
         tscore = scores[tkey]
 
-
-        heuristic = (abs(mscore-tscore)/min(mscore, tscore)) * 100
+        """ Make sure the atleast few clusters are formed """
+        if step > 4:
+            heuristic = (abs(mscore-tscore)/min(mscore, tscore)) * 100
+        else:
+            heuristic = 100
         # print heuristic
 
 

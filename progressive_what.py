@@ -314,7 +314,7 @@ def run_experiment(dataset_name):
     assert(len(keys) == 0), "It must be empty"
 
 
-    print "Length of training_samples : ", len(training_dep)
+    # print "Length of training_samples : ", len(training_dep)
 
     """ This is to make sure that the loop terminates"""
     progressive_length = sum([len(ri) for ri in rest_indep])
@@ -362,7 +362,7 @@ def run_experiment(dataset_name):
         else:
             """ This is to track which cluster is stable and which is not """
             passed_clusters[cluster_number] += 1
-            print passed_clusters
+            # print passed_clusters
 
         error_score = get_error(training_indep, training_dep, validation_indep, validation_dep)
         count += 1
@@ -395,6 +395,8 @@ if __name__ == "__main__":
     import sys
     from random import seed
     seed(10)
+
+    print "Note: This code uses the original WHERE code and doesn't use any pruning heuristics"
 
     datasets = ["Apache.csv", "BerkeleyC.csv", "BerkeleyDB.csv", "BerkeleyDBC.csv", "BerkeleyDBJ.csv",
                 "clasp.csv", "Dune.csv", "EPL.csv", "LinkedList.csv",

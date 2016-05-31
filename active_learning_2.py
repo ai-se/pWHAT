@@ -330,9 +330,9 @@ if __name__ == "__main__":
     seed(10)
     print "remember this doesn't consider cluster structure  or validation set"
 
-    datasets = [ "BerkeleyDB.csv", "BerkeleyDBC.csv", "BerkeleyDBJ.csv",
+    datasets = ["Apache.csv", "BerkeleyC.csv", "BerkeleyDB.csv", "BerkeleyDBC.csv", "BerkeleyDBJ.csv",
                 "clasp.csv", "Dune.csv", "EPL.csv", "LinkedList.csv",
-                "lrzip.csv", "PKJab.csv", "SQLite.csv", "Wget.csv", "x264.csv", "ZipMe.csv", "AJStats.csv", "Apache.csv", "BerkeleyC.csv",]
+                "lrzip.csv", "PKJab.csv", "SQLite.csv", "Wget.csv", "x264.csv", "ZipMe.csv", "AJStats.csv"]
 
     # datasets = ["AJStats.csv"]
     for dataset in datasets:
