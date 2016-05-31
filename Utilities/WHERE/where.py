@@ -4,7 +4,15 @@ import pandas as pd
 import numpy as np
 from os import walk
 from random import randint as randi, seed as rseed
-__author__ = 'rkrsn'
+__author__ = 'vivekaxl'
+
+def euclidean_distance(list1, list2):
+    assert(len(list1) == len(list2)), "The points don't have the same dimension"
+    distance = sum([(i - j) ** 2 for i, j in zip(list1, list2)]) ** 0.5
+    assert(distance >= 0), "Distance can't be less than 0"
+    return distance
+
+
 
 def where(data, scores):
     """
@@ -20,7 +28,7 @@ def where(data, scores):
     norm = np.max(data, axis=0)[:-1] -np.min(data, axis=0)[:-1]
 
     def aDist(one, two):
-        return np.sqrt(np.sum((np.array(one[:-1])/norm-np.array(two[:-1])/norm)**2))
+        return euclidean_distance(one.tolist(), two.tolist())
 
     def farthest(one,rest):
         return sorted(rest, key=lambda F: aDist(F,one))[-1]
@@ -38,7 +46,10 @@ def where(data, scores):
         mscore = scores[mkey]
         tscore = scores[tkey]
 
-        heuristic = (abs(mscore-tscore)/min(mscore, tscore)) * 100
+        if step >=2:
+            heuristic = (abs(mscore-tscore)/min(mscore, tscore)) * 100
+        else:
+            heuristic = 100
 
         # Project each case on
         def proj(test):
@@ -73,7 +84,7 @@ def where_org(data):
     norm = np.max(data, axis=0)[:-1] -np.min(data, axis=0)[:-1]
 
     def aDist(one, two):
-        return np.sqrt(np.sum((np.array(one[:-1])/norm-np.array(two[:-1])/norm)**2))
+        return euclidean_distance(one.tolist(), two.tolist())
 
     def farthest(one,rest):
         return sorted(rest, key=lambda F: aDist(F,one))[-1]
