@@ -257,63 +257,52 @@ def run_experiment(dataset_name):
             CARTS.append(CART.fit(temp_training_indep, temp_training_dep))
         return CARTS
 
-
-    import time
     size_of_commitee = 10
-    begin_time = time.time()
-    # print "WHERE started"
     clusters, scores = WHEREDataTransformation("./Data/normalized_input/normalized_" + dataset_name)
-    # print "Time taken for WHERE: ", (time.time() - begin_time) % 60
 
     training_indep = []
-    validation_indep = []
     rest_indep = []
 
     for cluster in clusters:
         one_random_index = randint(0, len(cluster)-1)
-        two_random_index = randint(0, len(cluster)-1)
-        # making sure one_random_index is not equal to two_random_index
-        while one_random_index == two_random_index: two_random_index = randint(0, len(cluster)-1)
 
         rest_indexes = range(len(cluster))
         rest_indexes.remove(one_random_index)
-        rest_indexes.remove(two_random_index)
 
         training_indep.append(cluster[one_random_index])
-        validation_indep.append(cluster[two_random_index])
         rest_indep.extend([cluster[i] for i in rest_indexes])
 
 
-    # get training_dep
+    """ For debugging"""
+    min_training_size = len(training_indep)
+
+    """ get training_dep """
     keys = scores.keys()
-    # # remove keys of training_data from variable "keys"
+
     training_keys = [",".join(map(str, td.tolist())) for td in training_indep]
     training_dep = [scores[training_key] for training_key in training_keys]
-    # removing all the training point from the keys
-    for training_key in training_keys: keys.remove(training_key)
+    assert(len(training_indep) == len(training_dep)), "Length of training should be equal to testing"
 
-    validation_keys = [",".join(map(str, td.tolist())) for td in validation_indep]
-    validation_dep = [scores[validation_key] for validation_key in validation_keys]
-    # removing all the validation point from the keys
-    for validation_key in validation_keys: keys.remove(validation_key)
+    """ Removing all the training point from the keys """
+    for training_key in training_keys: keys.remove(training_key)
 
     rest_keys = [",".join(map(str, td.tolist())) for td in rest_indep]
     rest_dep = [scores[rest_key] for rest_key in rest_keys]
-    # removing all the validation point from the keys
     for rest_key in rest_keys: keys.remove(rest_key)
 
     assert(len(keys) == 0), "At this point all the items in Keys should be deleted."
+    assert(len(training_dep) + len(rest_dep) == len(scores.keys())), "Sum of the length of training and testing should be the same"
 
     for i in xrange(len(rest_indep)):
         predicted_values = []
         committee = generate_commitee(training_indep, training_dep)
         for member in committee: predicted_values.append(get_prediction(member, [rest_indep[i]]))
-        # this is a proxy for entropy
+
+        """ This is a proxy for entropy """
         error_percentage = ((max(predicted_values) - min(predicted_values))/min(predicted_values)) * 100
         if error_percentage > 15:
             training_indep.append(rest_indep[i])
             training_dep.append(rest_dep[i])
-            # print error_percentage, len(training_indep), i
         assert(len(training_indep) == len(training_dep)), "After appending the length of the training and testing should be the same"
 
     keys = scores.keys()
@@ -329,6 +318,7 @@ def run_experiment(dataset_name):
     assert(len(training_indep) + len(testing_indep) == len(scores.keys())), "training + testing == size of dataset"
 
     error_rate = get_error(training_indep, training_dep, testing_indep, testing_dep)
+    assert(len(training_dep) >= min_training_size), "This shouldn't happen"
     return error_rate, len(training_dep)
 
 
@@ -340,9 +330,9 @@ if __name__ == "__main__":
     seed(10)
     print "remember this doesn't consider cluster structure  or validation set"
 
-    datasets = ["Apache.csv", "BerkeleyC.csv", "BerkeleyDB.csv", "BerkeleyDBC.csv", "BerkeleyDBJ.csv",
+    datasets = [ "BerkeleyDB.csv", "BerkeleyDBC.csv", "BerkeleyDBJ.csv",
                 "clasp.csv", "Dune.csv", "EPL.csv", "LinkedList.csv",
-                "lrzip.csv", "PKJab.csv", "SQLite.csv", "Wget.csv", "x264.csv", "ZipMe.csv", "AJStats.csv"]
+                "lrzip.csv", "PKJab.csv", "SQLite.csv", "Wget.csv", "x264.csv", "ZipMe.csv", "AJStats.csv", "Apache.csv", "BerkeleyC.csv",]
 
     # datasets = ["AJStats.csv"]
     for dataset in datasets:
