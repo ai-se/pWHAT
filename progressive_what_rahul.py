@@ -263,17 +263,7 @@ def run_experiment(dataset_name):
         assert (len(predictions) == 1), "Should only predict one value"
         return predictions[-1]
 
-    def generate_commitee(training_indep, training_dep):
-        CARTS = []
-        committee_indexes = [[randint(0, len(training_indep) - 1) for _ in xrange(len(training_indep))] for _ in
-                             xrange(size_of_commitee)]
-        for committee_index in committee_indexes:
-            temp_training_indep = [training_indep[i] for i in committee_index]
-            temp_training_dep = [training_dep[i] for i in committee_index]
-            from sklearn import tree
-            CART = tree.DecisionTreeRegressor()
-            CARTS.append(CART.fit(temp_training_indep, temp_training_dep))
-        return CARTS
+
 
     df = pd.read_csv("./Data/normalized_input/normalized_" + dataset_name)
     headers = [h for h in df.columns if '$<' not in h]
