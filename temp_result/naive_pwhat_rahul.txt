@@ -1,0 +1,18 @@
+Note: This code uses the original WHERE code and doesn't use any pruning heuristics
+. . . . . . . . . .
+Apache.csv 12.727 7.547 76.0 0.0
+BerkeleyC.csv 4.694 0.667 17.7 3.848
+BerkeleyDB.csv 1.456 0.131 64.0 0.0
+BerkeleyDBC.csv 4.504 2.054 72.0 20.799
+BerkeleyDBJ.csv 9.825 11.164 21.6 16.8
+clasp.csv 6.177 2.593 83.8 98.141
+Dune.csv 15.678 3.193 894.8 78.6
+EPL.csv 4.96 1.257 31.7 38.273
+LinkedList.csv 3.345 0.67 16.0 0.0
+lrzip.csv 42.461 27.558 172.0 0.0
+PKJab.csv 1.642 0.621 8.0 0.0
+SQLite.csv 4.443 4.854 18.9 2.809
+Wget.csv 20.989 14.985 52.0 28.178
+x264.csv 5.226 1.093 47.1 21.988
+ZipMe.csv 4.03 1.623 8.3 0.64
+AJStats.csv 2.277 0.13 128.0 0.0

@@ -2,8 +2,7 @@ from __future__ import division
 
 import decimal
 import math
-from random import choice, randint, shuffle
-from numpy import mean
+from random import choice, shuffle
 import pandas as pd
 
 decimal.setcontext(decimal.Context(prec=34))
@@ -198,7 +197,7 @@ def get_hotspot_scores(data):
 
 
 def WHEREDataTransformation(filename):
-    from Utilities.WHERE.where import where_orginal
+    from Utilities.WHERE.where import where
     # The Data has to be access using this attribute table._rows.cells
     import pandas as pd
     df = pd.read_csv(filename)
@@ -211,7 +210,7 @@ def WHEREDataTransformation(filename):
         scores[key] = df[dependents].iloc[i][-1]
 
     data = df[headers]
-    clusters = where_orginal(data)
+    clusters = where(data)
 
     return clusters, scores
 
@@ -224,22 +223,12 @@ def sorting_function(list_data):
 
 def return_content(header, independent, dependent):
     return_c = ",".join(header) + "\n"
-    """ I add -1 since WHERE doesn't care for the dependent variable"""
     for i,d in zip(independent, dependent):
-        return_c += ",".join(map(str, i.tolist())) + "," + str(d) + "\n"
+        return_c += ",".join(map(str, i)) + "," + str(d) + "\n"
     return return_c
 
 
 def run_experiment(dataset_name):
-    def get_error(training_indep, training_dep, testing_indep, testing_dep):
-        from sklearn import tree
-        CART = tree.DecisionTreeRegressor()
-        CART.fit(training_indep, training_dep)
-        predictions = [float(x) for x in CART.predict(testing_indep)]
-        mre = []
-        for i, j in zip(testing_dep, predictions): mre.append(abs(i - j) / float(i))
-        return mean(mre)
-
     df = pd.read_csv("./Data/normalized_input/normalized_" + dataset_name)
     headers = [h for h in df.columns if '$<' not in h]
     dependents = [h for h in df.columns if '$<' in h]
@@ -250,45 +239,27 @@ def run_experiment(dataset_name):
         key = ",".join(map(str, df[headers].iloc[i]))
         scores[key] = df[dependents].iloc[i][-1]
 
-    def generate_commitee(training_indep, training_dep):
-        CARTS = []
-        committee_indexes = [[randint(0, len(training_indep) - 1) for _ in xrange(len(training_indep))] for _ in
-                             xrange(size_of_commitee)]
-        for committee_index in committee_indexes:
-            temp_training_indep = [training_indep[i] for i in committee_index]
-            temp_training_dep = [training_dep[i] for i in committee_index]
-            from sklearn import tree
-            CART = tree.DecisionTreeRegressor()
-            CARTS.append(CART.fit(temp_training_indep, temp_training_dep))
-        return CARTS
-
-    def get_prediction(Kart, testing_indep):
-        predictions = [float(x) for x in Kart.predict(testing_indep)]
-        assert(len(predictions) == 1), "Should only predict one value"
-        return predictions[-1]
-
-
+    """ Find validation set"""
     indexes = range(len(df))
     shuffle(indexes)
 
-    """ Data Sizes """
+    """ Test Data Sizes """
     training_set_size = int(len(indexes) * 0.4)
     testing_set_size = len(indexes) - training_set_size
 
     training_indexes = indexes[:training_set_size]
     test_indexes = indexes[training_set_size:]
 
-    """ For Training data """
+    """ For initial training data"""
     training_indep = []
     training_dep = []
-    for vi in training_indexes:
-        temp_holder = data.iloc[vi]
+    for iti in training_indexes:
+        temp_holder = data.iloc[iti].tolist()
         training_indep.append(temp_holder)
         """ Finding the depended values of training Indep"""
         key = ",".join(map(str, temp_holder))
         training_dep.append(scores[key])
-    assert (len(training_indep) == len(training_dep)), "The length of training and testing should be the same"
-
+    assert (len(training_dep) == len(training_indep)), "The length of training and testing should be the same"
 
     """ For Testing data """
     testing_indep = []
@@ -301,74 +272,39 @@ def run_experiment(dataset_name):
         testing_dep.append(scores[key])
     assert (len(testing_indep) == len(testing_dep)), "The length of training and testing should be the same"
 
-    assert(len(training_indep) + len(testing_indep) == len(df)), "Something is wrong"
-
     """ Writing the training set into a file """
     H = df.columns.tolist()
     content = return_content(H, training_indep, training_dep)
-    temp_filename = "./temp_where_ac2_old.csv"
+    temp_filename = "./temp_where_3.csv"
     f = open(temp_filename, "w")
     f.write(content)
     f.close()
 
-    size_of_commitee = 10
     clusters, scores = WHEREDataTransformation(temp_filename)
-    assert(sum([len(cluster) for cluster in clusters]) == training_set_size), "Something is wrong with the clustering method"
+    assert (
+        sum([len(cluster) for cluster in
+             clusters]) == training_set_size), "Something is wrong with the clustering method"
 
-    training_indep = []
-    rest_indep = []
-
-    """ Generate initial data """
-    for cluster in clusters:
-        one_random_index = randint(0, len(cluster)-1)
-
-        rest_indexes = range(len(cluster))
-        rest_indexes.remove(one_random_index)
-
-        training_indep.append(cluster[one_random_index])
-        rest_indep.extend([cluster[i] for i in rest_indexes])
-
-    # print "Length of the training data: ", len(training_indep)
-    """ For debugging"""
-    min_training_size = len(training_indep)
-
-    """ Get training_dep """
+    from random import choice
+    training_indep = [choice(c) for c in clusters]
     keys = scores.keys()
-
-
     training_keys = [",".join(map(str, td.tolist())) for td in training_indep]
     training_dep = [scores[training_key] for training_key in training_keys]
-    assert(len(training_indep) == len(training_dep)), "Length of training should be equal to testing"
 
-    """ Removing all the training point from the keys
-        We don't need to worry about the testing points since the temp_where.csv doesn't have testing data
-    """
-    for training_key in training_keys: keys.remove(training_key)
+    assert (len(training_indep) == len(training_dep)), "Something is wrong"
+    from sklearn import tree
+    CART = tree.DecisionTreeRegressor()
+    CART = CART.fit(training_indep, training_dep)
 
-    rest_keys = [",".join(map(str, td.tolist())) for td in rest_indep]
-    rest_dep = [scores[rest_key] for rest_key in rest_keys]
-    for rest_key in rest_keys: keys.remove(rest_key)
 
-    assert(len(keys) == 0), "At this point all the items in Keys should be deleted."
-    assert(len(training_dep) + len(rest_dep) == training_set_size), "Sum of the length of training and testing should be the same"
+    predictions = [float(x) for x in CART.predict(testing_indep)]
+    mre = []
+    for i, j in zip(testing_dep, predictions):
+        if i != 0:
+            mre.append(abs(i - j) / float(i))
 
-    for i in xrange(len(rest_indep)):
-        predicted_values = []
-        committee = generate_commitee(training_indep, training_dep)
-        for member in committee: predicted_values.append(get_prediction(member, [rest_indep[i]]))
-        # print predicted_values
-
-        """ This is a proxy for entropy """
-        error_percentage = ((max(predicted_values) - min(predicted_values))/min(predicted_values)) * 100
-
-        if error_percentage > 15:
-            training_indep.append(rest_indep[i])
-            training_dep.append(rest_dep[i])
-        assert(len(training_indep) == len(training_dep)), "After appending the length of the training and testing should be the same"
-
-    error_rate = get_error(training_indep, training_dep, testing_indep, testing_dep)
-    assert(len(training_dep) >= min_training_size), "This shouldn't happen"
-    return error_rate, len(training_dep)
+    from numpy import mean
+    return mean(mre), len(training_dep)
 
 
 
@@ -377,13 +313,12 @@ if __name__ == "__main__":
     from random import seed
 
     seed(10)
-    print "remember this doesn't consider cluster structure  or validation set"
+    print "Note: This code uses the modified WHERE code which means it  uses pruning heuristics"
 
-    datasets = ["Apache.csv", "BerkeleyC.csv", "BerkeleyDB.csv", "BerkeleyDBC.csv", "BerkeleyDBJ.csv",
-                "clasp.csv", "Dune.csv", "EPL.csv", "LinkedList.csv",
-                "lrzip.csv", "PKJab.csv", "SQLite.csv", "Wget.csv", "x264.csv", "ZipMe.csv", "AJStats.csv"]
+    datasets = [ "Apache.csv", "BerkeleyC.csv", "BerkeleyDB.csv", "BerkeleyDBC.csv", "BerkeleyDBJ.csv",
+                    "clasp.csv", "Dune.csv", "EPL.csv", "Hipacc.csv", "LinkedList.csv",
+                    "lrzip.csv", "PKJab.csv", "SQLite.csv", "Wget.csv", "x264.csv", "ZipMe.csv", "AJStats.csv"]
 
-    # datasets = ["AJStats.csv"]
     for dataset in datasets:
         mean_mre = []
         mean_length = []
