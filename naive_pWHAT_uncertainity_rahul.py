@@ -382,7 +382,7 @@ def run_experiment(dataset_name):
 
 
     count = len(training_dep)
-    while error_score > 0.05 and count < training_set_size:
+    while error_score > 0.07 and count < training_set_size:
         """ Variance Ranks are calculated every interation so that it slowly converges """
         variance_ranks = find_variance_ranks(rest_indep)
         cluster_number = variance_ranks[0]
