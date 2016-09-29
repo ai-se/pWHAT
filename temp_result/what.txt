@@ -1,6 +1,0 @@
-. . . . . . . . . .
-Apache.csv 11.046 3.39 16.0 0.0
-BerkeleyC.csv 3.62 0.681 32.0 0.0
-BerkeleyDB.csv 1.341 0.134 64.0 0.0
-BerkeleyDBC.csv 6.912 3.708 64.0 0.0
-BerkeleyDBJ.csv 11.181 17.995 16.0 0.0
