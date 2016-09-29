@@ -37,7 +37,7 @@ def WHEREDataTransformation(df):
 def run_experiment(dataset_name):
     content = pd.read_csv("./Data/input/" + dataset_name)
     headers = [h for h in content.columns if '$<' not in h]
-    dependents = [h for h in content.columns if '$<' in h]
+    dependents = [h for h in content.columns if '$<' in h][-1]
     mask = np.random.rand(len(content)) < 0.4
 
     train = content[mask]
@@ -65,9 +65,8 @@ def run_experiment(dataset_name):
 
     predictions = [float(x) for x in CART.predict(indep_testing_set)]
     mre = []
-    for i, j in zip(dep_testing_set, predictions):
-        if i != 0:
-            mre.append(abs(i - j) / float(i))
+    for i, j in zip(dep_testing_set.values.tolist(), predictions):
+            mre.append(abs(i - j) / (float(i) + 0.00001))
 
     from numpy import mean
     return mean(mre), len(training_dep)
