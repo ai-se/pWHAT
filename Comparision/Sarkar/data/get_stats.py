@@ -1,9 +1,9 @@
 import os
 import numpy as np
-files = os.listdir("./input/")
+files = os.listdir("./raw_input/")
 for file in files:
-    filename = "./input/" + file
-    if filename == "./input/__init__.py": continue
+    filename = "./raw_input/" + file
+    if filename == "./raw_input/__init__.py": continue
     import pandas as pd
     df = pd.read_csv(filename)
     headers = [h for h in df.columns if '$<' not in h]

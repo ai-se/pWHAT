@@ -80,7 +80,7 @@ def random_progressive_sampling(dataset_file):
 
 
 if __name__ == "__main__":
-    filenames = [file for file in os.listdir("../../Data/input/") if file != ".DS_Store" if file != "__init__.py"]
+    filenames = [file for file in os.listdir("../../Data/raw_input/") if file != ".DS_Store" if file != "__init__.py"]
     from random import seed
     seed(10)
     for filename in filenames:

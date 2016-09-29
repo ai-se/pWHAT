@@ -30,7 +30,7 @@ class data_item():
 
 def read_csv(filename, header=False):
     def transform(filename):
-        return "./data/input/" + filename
+        return "./data/raw_input/" + filename
 
     import csv
     data = []
